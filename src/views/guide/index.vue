@@ -36,11 +36,9 @@
     <div>
       ***********************************************************************************
     </div>
-    <el-calendar>
+    <el-calendar v-model="value">
       <template slot="dateCell" slot-scope="{ date, data }">
-        <p
-          class="normal"
-        >
+        <p class="normal" @click="clickEveryone(date)">
           {{ solarDate2lunar(data.day) }}
         </p>
       </template>
@@ -64,8 +62,9 @@ export default {
       isIndeterminate: true,
       checkAll: false,
       aaa: [], // 选中
-      bbb: [] // 全部选项
-
+      bbb: [], // 全部选项
+      value: new Date(),
+      everyDate: ''
     }
   },
   created() {
@@ -73,6 +72,43 @@ export default {
       // console.log(data)
       this.notice = data
       // console.log(this.notice)
+    })
+    this.$nextTick(() => {
+      // 点击前一个月
+      const prevBtn = document.querySelector(
+        '.el-calendar__button-group .el-button-group>button:nth-child(1)')
+      prevBtn.addEventListener('click', () => {
+        const yy = new Date(this.value).getFullYear()
+        const mm = this.checkTime(new Date(this.value).getMonth() + 1)
+        const dd = this.checkTime(new Date(this.value).getDate())
+        const dates = yy + '-' + mm + '-' + dd
+        console.log(dates)
+      })
+    })
+    this.$nextTick(() => {
+      // 点击前一个月
+      const prevBtn = document.querySelector(
+        '.el-calendar__button-group .el-button-group>button:nth-child(2)')
+      prevBtn.addEventListener('click', () => {
+        const yy = new Date().getFullYear()
+        const mm = this.checkTime(new Date().getMonth() + 1)
+        const dd = this.checkTime(new Date().getDate())
+        const dates = yy + '-' + mm + '-' + dd
+        console.log(dates)
+      })
+    })
+
+    this.$nextTick(() => {
+      // 点击后一个月
+      const prevBtn = document.querySelector(
+        '.el-calendar__button-group .el-button-group>button:last-child')
+      prevBtn.addEventListener('click', () => {
+        const yy = new Date(this.value).getFullYear()
+        const mm = this.checkTime(new Date(this.value).getMonth() + 1)
+        const dd = this.checkTime(new Date(this.value).getDate())
+        const dates = yy + '-' + mm + '-' + dd
+        console.log(dates)
+      })
     })
   },
   mounted() {
@@ -378,6 +414,7 @@ export default {
       }
       // this.isIndeterminate = false
     },
+    // 日历
     solarDate2lunar(solarDate) {
       // console.log(solarDate)
       if (solarDate !== undefined) {
@@ -393,6 +430,19 @@ export default {
         }
         return solar[2] + '\n' + ydate
       }
+    },
+    checkTime(i) {
+      if (i < 10) {
+        i = '0' + i
+      }
+      return i
+    },
+    clickEveryone(e) {
+      const yy = new Date(e).getFullYear()
+      const mm = this.checkTime(new Date(e).getMonth() + 1)
+      const dd = this.checkTime(new Date(e).getDate())
+      const dates = yy + '-' + mm + '-' + dd
+      console.log(dates)
     }
   }
 }
