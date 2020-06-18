@@ -4,10 +4,9 @@
       The guide page is useful for some people who entered the project for the
       first time. You can briefly introduce the features of the project. Demo is
       based on
-      <a
-        href="https://github.com/kamranahmedse/driver.js"
-        target="_blank"
-      >driver.js.</a>
+      <a href="https://github.com/kamranahmedse/driver.js" target="_blank"
+        >driver.js.</a
+      >
     </aside>
     <el-button
       icon="el-icon-question"
@@ -24,7 +23,8 @@
       <el-checkbox
         v-model="elem.parameters"
         @change="handleCheckAllChange(elem)"
-      >全选</el-checkbox>
+        >全选</el-checkbox
+      >
       <el-checkbox-group v-model="elem.parameters" @change="boxChange(elem)">
         <el-checkbox
           v-for="(item, index) in elem.typeData"
@@ -38,8 +38,13 @@
     </div>
     <el-calendar v-model="value">
       <template slot="dateCell" slot-scope="{ date, data }">
-        <p class="normal" @click="clickEveryone(date)">
-          {{ solarDate2lunar(data.day) }}
+        <p
+          :class="
+            solarDate2lunar(data.day).isFestval || solarDate2lunar(data.day).isLunarFestival ? 'normal active' : 'normal'
+          "
+          @click="clickEveryone(date)"
+        >
+          {{ solarDate2lunar(data.day).date }}
         </p>
       </template>
     </el-calendar>
@@ -64,7 +69,8 @@ export default {
       aaa: [], // 选中
       bbb: [], // 全部选项
       value: new Date(),
-      everyDate: ''
+      everyDate: '',
+      isLunarFestival: ''
     }
   },
   created() {
@@ -76,7 +82,8 @@ export default {
     this.$nextTick(() => {
       // 点击前一个月
       const prevBtn = document.querySelector(
-        '.el-calendar__button-group .el-button-group>button:nth-child(1)')
+        '.el-calendar__button-group .el-button-group>button:nth-child(1)'
+      )
       prevBtn.addEventListener('click', () => {
         const yy = new Date(this.value).getFullYear()
         const mm = this.checkTime(new Date(this.value).getMonth() + 1)
@@ -88,7 +95,8 @@ export default {
     this.$nextTick(() => {
       // 点击前一个月
       const prevBtn = document.querySelector(
-        '.el-calendar__button-group .el-button-group>button:nth-child(2)')
+        '.el-calendar__button-group .el-button-group>button:nth-child(2)'
+      )
       prevBtn.addEventListener('click', () => {
         const yy = new Date().getFullYear()
         const mm = this.checkTime(new Date().getMonth() + 1)
@@ -101,7 +109,8 @@ export default {
     this.$nextTick(() => {
       // 点击后一个月
       const prevBtn = document.querySelector(
-        '.el-calendar__button-group .el-button-group>button:last-child')
+        '.el-calendar__button-group .el-button-group>button:last-child'
+      )
       prevBtn.addEventListener('click', () => {
         const yy = new Date(this.value).getFullYear()
         const mm = this.checkTime(new Date(this.value).getMonth() + 1)
@@ -420,7 +429,7 @@ export default {
       if (solarDate !== undefined) {
         var solar = solarDate.split('-')
         var lunar = calendar.solar2lunar(solar[0], solar[1], solar[2])
-        // console.log(lunar.lunarFestival)
+        // console.log(lunar)
         var ydate = lunar.IDayCn
         if (lunar.lunarFestival !== null) {
           ydate = lunar.lunarFestival
@@ -428,7 +437,12 @@ export default {
         if (lunar.festival !== null) {
           ydate = lunar.festival
         }
-        return solar[2] + '\n' + ydate
+        const obj = {
+          date: solar[2] + '\n' + ydate,
+          isLunarFestival: lunar.isLunarFestival,
+          isFestval: lunar.isFestval
+        }
+        return obj
       }
     },
     checkTime(i) {
@@ -448,12 +462,12 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-  .red {
+  .active {
     color: #f00;
   }
-  .normal{
+  .normal {
     white-space: pre-line;
-    margin:0;
-    text-align:center;
+    margin: 0;
+    text-align: center;
   }
 </style>

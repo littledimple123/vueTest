@@ -561,12 +561,13 @@ let calendar = {
 
     var festivalDate = m + '-' + d
     var lunarFestivalDate = month + '-' + day
-
     return {
       date: solarDate,
       lunarDate: lunarDate,
       festival: festival[festivalDate] ? festival[festivalDate].title : null,
+      isFestval: festival[festivalDate] !== undefined ? true:false,
       lunarFestival: lfestival[lunarFestivalDate] ? lfestival[lunarFestivalDate].title : null,
+      isLunarFestival:lfestival[lunarFestivalDate]?true:false,
       'lYear': year,
       'lMonth': month,
       'lDay': day,
