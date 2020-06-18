@@ -36,7 +36,7 @@
     <div>
       ***********************************************************************************
     </div>
-    <el-calendar v-model="value">
+    <el-calendar v-model='value'>
       <template slot="dateCell" slot-scope="{ date, data }">
         <p
           :class="
@@ -68,9 +68,7 @@ export default {
       checkAll: false,
       aaa: [], // 选中
       bbb: [], // 全部选项
-      value: new Date(),
-      everyDate: '',
-      isLunarFestival: ''
+      value: new Date()
     }
   },
   created() {
