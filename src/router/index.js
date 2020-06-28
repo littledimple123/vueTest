@@ -189,7 +189,19 @@ export const asyncRoutes = [
   chartsRouter,
   nestedRouter,
   tableRouter,
-
+  {
+    path: '/drag-form',
+    component: Layout,
+    redirect: '/drag-form/index',
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/drag-form/index'),
+        name: 'DragForm',
+        meta: { title: 'DragForm', icon: 'pdf' }
+      }
+    ]
+  },
   {
     path: '/example',
     component: Layout,
